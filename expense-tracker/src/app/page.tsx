@@ -7,11 +7,13 @@ import { storage } from '@/lib/storage';
 import SummaryCards from '@/components/summary-cards';
 import CategoryBreakdown from '@/components/category-breakdown';
 import RecentExpenses from '@/components/recent-expenses';
+import CloudExportDashboard from '@/components/cloud-export-dashboard';
 import Link from 'next/link';
 
 export default function Dashboard() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCloudExportOpen, setIsCloudExportOpen] = useState(false);
 
   useEffect(() => {
     loadExpenses();
@@ -50,12 +52,31 @@ export default function Dashboard() {
             Welcome to your expense tracker. Here&apos;s your financial overview.
           </p>
         </div>
-        <Link
-          href="/add"
-          className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors font-medium"
-        >
-          Add Expense
-        </Link>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setIsCloudExportOpen(true)}
+            className="relative overflow-hidden bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:via-blue-600 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-2xl transform hover:scale-105 group flex items-center gap-3"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative flex items-center gap-2">
+              <div className="p-1 bg-white/20 rounded-lg">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                </svg>
+              </div>
+              <span>Cloud Export</span>
+              <div className="px-2 py-0.5 bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs font-bold rounded-full animate-pulse">
+                PRO
+              </div>
+            </div>
+          </button>
+          <Link
+            href="/add"
+            className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors font-medium"
+          >
+            Add Expense
+          </Link>
+        </div>
       </div>
 
       <SummaryCards summary={summary} />
@@ -137,6 +158,12 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+      
+      <CloudExportDashboard 
+        expenses={expenses}
+        isOpen={isCloudExportOpen}
+        onClose={() => setIsCloudExportOpen(false)}
+      />
     </div>
   );
 }
