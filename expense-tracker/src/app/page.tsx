@@ -7,13 +7,13 @@ import { storage } from '@/lib/storage';
 import SummaryCards from '@/components/summary-cards';
 import CategoryBreakdown from '@/components/category-breakdown';
 import RecentExpenses from '@/components/recent-expenses';
-import ExportModal from '@/components/export-modal';
+import CloudExportDashboard from '@/components/cloud-export-dashboard';
 import Link from 'next/link';
 
 export default function Dashboard() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isCloudExportOpen, setIsCloudExportOpen] = useState(false);
 
   useEffect(() => {
     loadExpenses();
@@ -55,13 +55,21 @@ export default function Dashboard() {
         </div>
         <div className="flex gap-3">
           <button
-            onClick={() => setIsExportModalOpen(true)}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2"
+            onClick={() => setIsCloudExportOpen(true)}
+            className="relative overflow-hidden bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-emerald-600 hover:via-blue-600 hover:to-purple-700 transition-all duration-300 font-medium shadow-lg hover:shadow-2xl transform hover:scale-105 group flex items-center gap-3"
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            Advanced Export
+            <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative flex items-center gap-2">
+              <div className="p-1 bg-white/20 rounded-lg">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10" />
+                </svg>
+              </div>
+              <span>Cloud Export</span>
+              <div className="px-2 py-0.5 bg-gradient-to-r from-yellow-400 to-orange-400 text-black text-xs font-bold rounded-full animate-pulse">
+                PRO
+              </div>
+            </div>
           </button>
           <Link
             href="/add"
@@ -152,10 +160,10 @@ export default function Dashboard() {
         </div>
       )}
       
-      <ExportModal 
+      <CloudExportDashboard 
         expenses={expenses}
-        isOpen={isExportModalOpen}
-        onClose={() => setIsExportModalOpen(false)}
+        isOpen={isCloudExportOpen}
+        onClose={() => setIsCloudExportOpen(false)}
       />
     </div>
   );
