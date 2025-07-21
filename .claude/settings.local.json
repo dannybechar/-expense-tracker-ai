@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(pkill:*)",
+      "Bash(taskkill:*)",
+      "Bash(cmd //c:*)"
+    ],
+    "deny": []
+  }
+}
