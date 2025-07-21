@@ -2,16 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import { Expense } from '@/types/expense';
-import { calculateExpenseSummary, exportToCSV, downloadCSV } from '@/lib/utils';
+import { calculateExpenseSummary } from '@/lib/utils';
 import { storage } from '@/lib/storage';
 import SummaryCards from '@/components/summary-cards';
 import CategoryBreakdown from '@/components/category-breakdown';
 import RecentExpenses from '@/components/recent-expenses';
+import ExportModal from '@/components/export-modal';
 import Link from 'next/link';
 
 export default function Dashboard() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
 
   useEffect(() => {
     loadExpenses();
@@ -28,16 +30,6 @@ export default function Dashboard() {
     }
   };
 
-  const handleExportData = () => {
-    if (expenses.length === 0) {
-      alert('No expenses to export!');
-      return;
-    }
-    
-    const csvContent = exportToCSV(expenses);
-    const filename = `expenses-${new Date().toISOString().split('T')[0]}.csv`;
-    downloadCSV(csvContent, filename);
-  };
 
   if (isLoading) {
     return (
@@ -63,10 +55,13 @@ export default function Dashboard() {
         </div>
         <div className="flex gap-3">
           <button
-            onClick={handleExportData}
-            className="bg-secondary text-secondary-foreground px-4 py-2 rounded-md hover:bg-secondary/90 transition-colors font-medium"
+            onClick={() => setIsExportModalOpen(true)}
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center gap-2"
           >
-            Export Data
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Advanced Export
           </button>
           <Link
             href="/add"
@@ -156,6 +151,12 @@ export default function Dashboard() {
           </div>
         </div>
       )}
+      
+      <ExportModal 
+        expenses={expenses}
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+      />
     </div>
   );
 }
