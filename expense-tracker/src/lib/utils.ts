@@ -117,3 +117,135 @@ export function downloadCSV(content: string, filename: string = 'expenses.csv'):
     document.body.removeChild(link);
   }
 }
+
+export function exportToJSON(expenses: Expense[]): string {
+  const exportData = {
+    exportDate: new Date().toISOString(),
+    totalRecords: expenses.length,
+    expenses: expenses.map(expense => ({
+      id: expense.id,
+      date: expense.date,
+      amount: expense.amount,
+      category: expense.category,
+      description: expense.description,
+      createdAt: expense.createdAt,
+      updatedAt: expense.updatedAt
+    }))
+  };
+  
+  return JSON.stringify(exportData, null, 2);
+}
+
+export function downloadJSON(content: string, filename: string = 'expenses.json'): void {
+  const blob = new Blob([content], { type: 'application/json;charset=utf-8;' });
+  const link = document.createElement('a');
+  
+  if (link.download !== undefined) {
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+}
+
+export async function exportToPDF(expenses: Expense[]): Promise<Blob> {
+  const jsPDF = (await import('jspdf')).default;
+  const doc = new jsPDF();
+  
+  // Title
+  doc.setFontSize(20);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Expense Report', 20, 25);
+  
+  // Export info
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 35);
+  doc.text(`Total Records: ${expenses.length}`, 20, 40);
+  
+  // Table headers
+  doc.setFontSize(12);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Date', 20, 55);
+  doc.text('Amount', 60, 55);
+  doc.text('Category', 100, 55);
+  doc.text('Description', 140, 55);
+  
+  // Draw header line
+  doc.line(20, 57, 190, 57);
+  
+  // Table data
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  
+  let yPosition = 65;
+  const maxDescriptionLength = 25;
+  
+  expenses.forEach((expense) => {
+    if (yPosition > 270) { // Start new page if needed
+      doc.addPage();
+      yPosition = 25;
+      
+      // Repeat headers on new page
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text('Date', 20, yPosition);
+      doc.text('Amount', 60, yPosition);
+      doc.text('Category', 100, yPosition);
+      doc.text('Description', 140, yPosition);
+      doc.line(20, yPosition + 2, 190, yPosition + 2);
+      
+      yPosition += 10;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+    }
+    
+    const formattedDate = formatDate(expense.date);
+    const formattedAmount = formatCurrency(expense.amount);
+    const truncatedDescription = expense.description.length > maxDescriptionLength 
+      ? expense.description.substring(0, maxDescriptionLength) + '...'
+      : expense.description;
+    
+    doc.text(formattedDate, 20, yPosition);
+    doc.text(formattedAmount, 60, yPosition);
+    doc.text(expense.category, 100, yPosition);
+    doc.text(truncatedDescription, 140, yPosition);
+    
+    yPosition += 8;
+  });
+  
+  // Summary at the end
+  const totalAmount = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+  yPosition += 10;
+  
+  if (yPosition > 270) {
+    doc.addPage();
+    yPosition = 25;
+  }
+  
+  doc.setFont('helvetica', 'bold');
+  doc.text(`Total Amount: ${formatCurrency(totalAmount)}`, 20, yPosition);
+  
+  return new Promise((resolve) => {
+    const pdfBlob = doc.output('blob');
+    resolve(pdfBlob);
+  });
+}
+
+export function downloadPDF(blob: Blob, filename: string = 'expenses.pdf'): void {
+  const link = document.createElement('a');
+  
+  if (link.download !== undefined) {
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
+}
