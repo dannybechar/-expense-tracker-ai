@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Expense } from '@/types/expense';
-import { calculateExpenseSummary } from '@/lib/utils';
+import { calculateExpenseSummary, exportToCSV, downloadCSV } from '@/lib/utils';
 import { storage } from '@/lib/storage';
 import SummaryCards from '@/components/summary-cards';
 import CategoryBreakdown from '@/components/category-breakdown';
@@ -28,6 +28,17 @@ export default function Dashboard() {
     }
   };
 
+  const handleExportData = () => {
+    if (expenses.length === 0) {
+      alert('No expenses to export!');
+      return;
+    }
+    
+    const csvContent = exportToCSV(expenses);
+    const filename = `expenses-${new Date().toISOString().split('T')[0]}.csv`;
+    downloadCSV(csvContent, filename);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-64">
@@ -50,12 +61,20 @@ export default function Dashboard() {
             Welcome to your expense tracker. Here&apos;s your financial overview.
           </p>
         </div>
-        <Link
-          href="/add"
-          className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors font-medium"
-        >
-          Add Expense
-        </Link>
+        <div className="flex gap-3">
+          <button
+            onClick={handleExportData}
+            className="bg-secondary text-secondary-foreground px-4 py-2 rounded-md hover:bg-secondary/90 transition-colors font-medium"
+          >
+            Export Data
+          </button>
+          <Link
+            href="/add"
+            className="bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors font-medium"
+          >
+            Add Expense
+          </Link>
+        </div>
       </div>
 
       <SummaryCards summary={summary} />
