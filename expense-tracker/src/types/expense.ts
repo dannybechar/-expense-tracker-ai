@@ -5,6 +5,7 @@ export interface Expense {
   amount: number;
   category: ExpenseCategory;
   description: string;
+  vendor?: string;
   date: string;
   createdAt: string;
   updatedAt?: string;
@@ -14,6 +15,7 @@ export interface ExpenseFormData {
   amount: string;
   category: ExpenseCategory;
   description: string;
+  vendor?: string;
   date: string;
 }
 
