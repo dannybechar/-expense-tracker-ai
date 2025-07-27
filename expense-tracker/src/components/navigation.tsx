@@ -11,6 +11,7 @@ export default function Navigation() {
     { href: '/expenses', label: 'Expenses', icon: '💰' },
     { href: '/add', label: 'Add Expense', icon: '➕' },
     { href: '/csv-report', label: 'CSV Report', icon: '📄' },
+    { href: '/analytics', label: 'Analytics', icon: '📈' },
   ];
 
   return (

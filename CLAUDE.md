@@ -2,17 +2,21 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project Overview
+
+This is an expense tracker application with analytics and export capabilities built with Next.js 14, TypeScript, and Tailwind CSS. The main application code is located in the `expense-tracker/` subdirectory.
+
 ## Development Commands
 
-The main application is located in the `expense-tracker/` directory. Navigate there before running commands:
+Navigate to the `expense-tracker/` directory before running these commands:
 
 ```bash
 cd expense-tracker
 ```
 
-### Core Commands
-- `npm run dev` - Start development server with Turbopack (Next.js 15.4.2)
-- `npm run build` - Build for production 
+### Essential Commands
+- `npm run dev` - Start development server with Turbopack (http://localhost:3000)
+- `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint for code quality
 
@@ -23,7 +27,30 @@ cd expense-tracker
 
 ## Architecture Overview
 
-This is a Next.js 15 expense tracking application with advanced export capabilities, built with TypeScript and Tailwind CSS.
+This is a Next.js expense tracking application with advanced export capabilities and analytics dashboard, built with TypeScript and Tailwind CSS.
+
+### Tech Stack
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS v4
+- **Storage**: localStorage (client-side persistence)
+- **PDF Generation**: jsPDF library
+- **QR Codes**: qrcode library
+
+### Key Directories
+```
+expense-tracker/src/
+├── app/                    # Next.js App Router pages
+│   ├── add/               # Add expense page
+│   ├── expenses/          # Expenses list and management
+│   ├── analytics/         # Analytics dashboard
+│   ├── csv-report/        # CSV export functionality
+│   ├── layout.tsx         # Root layout with navigation
+│   └── page.tsx           # Dashboard homepage
+├── components/            # React components
+├── lib/                   # Utilities and storage layer
+├── types/                 # TypeScript definitions
+```
 
 ### Core Architecture Patterns
 
@@ -33,11 +60,14 @@ This is a Next.js 15 expense tracking application with advanced export capabilit
 - `Expense` - Core expense record with id, amount, category, description, date, and timestamps
 - `ExpenseCategory` - Union type for predefined categories (Food, Transportation, Entertainment, Shopping, Bills, Other)
 - `CloudService` and `ExportTemplate` - Advanced export system types
+- `ExpenseFilters` - Filtering interface for expense lists
+- `ExpenseSummary` - Analytics data structure
 
 **Component Architecture**: React components are organized by functionality:
 - Form components (`expense-form.tsx`) handle CRUD operations
 - Display components (`expense-list.tsx`, `summary-cards.tsx`) show data with filtering/sorting
-- Export components (`export-modal.tsx`, `cloud-export-dashboard.tsx`) provide multiple export formats
+- Export components (`export-modal.tsx`, `cloud-export-dashboard.tsx`, `simple-csv-report.tsx`) provide multiple export formats
+- Analytics components provide visual data insights
 - Layout components (`navigation.tsx`) provide consistent UI structure
 
 ### Export System Architecture
@@ -57,12 +87,26 @@ The application features a sophisticated multi-format export system:
 - QR code generation for sharing using the `qrcode` library
 - Professional UI with tab-based navigation and status indicators
 
+**Simple CSV Reports** (`src/components/simple-csv-report.tsx`):
+- Dedicated CSV report generation page
+- Real-time expense filtering and preview
+- Direct download functionality
+
+### Analytics Features
+
+The analytics dashboard provides:
+- Visual expense breakdowns by category
+- Time-based spending trends
+- Summary statistics and insights
+- Interactive charts and graphs
+
 ### Data Flow Patterns
 
 1. **State Management**: Uses React hooks with localStorage persistence
 2. **Data Filtering**: Utility functions handle complex filtering by date, category, and search terms
 3. **Export Processing**: Async operations with progress indicators and error handling
 4. **Form Validation**: Real-time validation with user-friendly error messages
+5. **Analytics Processing**: Real-time calculation of statistics and trends
 
 ### Key Implementation Details
 
@@ -75,8 +119,8 @@ The application features a sophisticated multi-format export system:
 ### Dependencies Architecture
 
 **Production Dependencies**:
-- `next` (15.4.2) - React framework with App Router
-- `react` (19.1.0) - UI library  
+- `next` (14.x) - React framework with App Router
+- `react` (18.x) - UI library  
 - `jspdf` (3.0.1) - PDF generation for reports
 - `qrcode` (1.5.4) - QR code generation for sharing
 
@@ -87,7 +131,7 @@ The application features a sophisticated multi-format export system:
 
 ### File Organization Principles
 
-- `src/app/` - Next.js 15 pages using App Router (add/, expenses/, root dashboard)
+- `src/app/` - Next.js pages using App Router (add/, expenses/, analytics/, csv-report/, root dashboard)
 - `src/components/` - Reusable React components organized by feature
 - `src/lib/` - Utility functions and business logic (storage operations, calculations, export functions)
 - `src/types/` - TypeScript type definitions for type safety
@@ -95,8 +139,19 @@ The application features a sophisticated multi-format export system:
 ### Code Style Conventions
 
 - Use TypeScript interfaces for all data structures
-- Follow Next.js 15 App Router patterns
+- Follow Next.js App Router patterns
 - Implement proper error handling in all async operations
 - Use Tailwind CSS utility classes with semantic component structure
 - Maintain consistent naming: camelCase for variables/functions, PascalCase for components
 - Include loading states and progress indicators for user experience
+
+## Development Notes
+
+### Working Directory
+Always work from the `expense-tracker/` subdirectory as that contains the actual Next.js application.
+
+### Data Persistence
+All expense data is stored in localStorage with the key `expense-tracker-data`. The storage module handles SSR compatibility and error cases gracefully.
+
+### Categories
+The application uses predefined expense categories: Food, Transportation, Entertainment, Shopping, Bills, Other. These are defined as TypeScript union types for type safety.
