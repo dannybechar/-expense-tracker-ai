@@ -18,6 +18,7 @@ export default function ExpenseForm({ onSubmit, initialData, onCancel }: Expense
     amount: initialData?.amount.toString() || '',
     category: initialData?.category || 'Food',
     description: initialData?.description || '',
+    vendor: initialData?.vendor || '',
     date: initialData?.date || new Date().toISOString().split('T')[0],
   });
 
@@ -62,6 +63,7 @@ export default function ExpenseForm({ onSubmit, initialData, onCancel }: Expense
         amount: Number(formData.amount),
         category: formData.category,
         description: formData.description.trim(),
+        vendor: formData.vendor?.trim() || undefined,
         date: formData.date,
         createdAt: initialData?.createdAt || new Date().toISOString(),
         updatedAt: initialData ? new Date().toISOString() : undefined,
@@ -82,6 +84,7 @@ export default function ExpenseForm({ onSubmit, initialData, onCancel }: Expense
           amount: '',
           category: 'Food',
           description: '',
+          vendor: '',
           date: new Date().toISOString().split('T')[0],
         });
       }
@@ -165,6 +168,21 @@ export default function ExpenseForm({ onSubmit, initialData, onCancel }: Expense
           {errors.description && (
             <p className="mt-1 text-sm text-destructive">{errors.description}</p>
           )}
+        </div>
+
+        <div>
+          <label htmlFor="vendor" className="block text-sm font-medium text-card-foreground mb-2">
+            Vendor (Optional)
+          </label>
+          <input
+            type="text"
+            id="vendor"
+            value={formData.vendor || ''}
+            onChange={(e) => handleInputChange('vendor', e.target.value)}
+            className="w-full px-3 py-2 border border-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-ring bg-input text-foreground"
+            placeholder="Enter vendor name"
+            disabled={isSubmitting}
+          />
         </div>
 
         <div>
