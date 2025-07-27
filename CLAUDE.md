@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an expense tracker analytics application built with Next.js 14, TypeScript, and Tailwind CSS. The main application code is located in the `expense-tracker/` subdirectory.
+This is an expense tracker application with analytics and export capabilities built with Next.js 14, TypeScript, and Tailwind CSS. The main application code is located in the `expense-tracker/` subdirectory.
 
 ## Development Commands
 
@@ -18,9 +18,16 @@ cd expense-tracker
 - `npm run dev` - Start development server with Turbopack (http://localhost:3000)
 - `npm run build` - Build for production
 - `npm run start` - Start production server
-- `npm run lint` - Run ESLint
+- `npm run lint` - Run ESLint for code quality
 
-## Architecture
+### Development Workflow
+1. Always run `npm run lint` after making changes to ensure code quality
+2. Use `npm run build` to verify production builds work correctly
+3. Development server runs on http://localhost:3000
+
+## Architecture Overview
+
+This is a Next.js expense tracking application with advanced export capabilities and analytics dashboard, built with TypeScript and Tailwind CSS.
 
 ### Tech Stack
 - **Framework**: Next.js 14 with App Router
@@ -36,6 +43,8 @@ expense-tracker/src/
 ├── app/                    # Next.js App Router pages
 │   ├── add/               # Add expense page
 │   ├── expenses/          # Expenses list and management
+│   ├── analytics/         # Analytics dashboard
+│   ├── csv-report/        # CSV export functionality
 │   ├── layout.tsx         # Root layout with navigation
 │   └── page.tsx           # Dashboard homepage
 ├── components/            # React components
@@ -43,28 +52,98 @@ expense-tracker/src/
 ├── types/                 # TypeScript definitions
 ```
 
-### Core Types
-- `Expense`: Main data model with id, amount, category, description, date
-- `ExpenseCategory`: Union type for predefined categories (Food, Transportation, etc.)
-- `ExpenseFilters`: Filtering interface for expense lists
-- `ExpenseSummary`: Analytics data structure
+### Core Architecture Patterns
 
-### Storage Architecture
-The application uses a centralized storage layer (`src/lib/storage.ts`) that abstracts localStorage operations. All data persistence goes through this module with proper error handling and SSR compatibility checks.
+**Client-Side Storage**: The application uses localStorage for data persistence with a centralized storage module (`src/lib/storage.ts`) that provides CRUD operations for expenses. All data operations include error handling for storage failures.
 
-### Component Architecture
-- **Navigation**: Global header with routing
-- **Summary Cards**: Dashboard metrics display
-- **Category Breakdown**: Visual analytics with progress bars
-- **Expense Form**: Add/edit expense functionality with validation
-- **Expense List**: Table view with filtering, sorting, and export
-- **Export Modal**: CSV and potential cloud export functionality
+**Type-Safe Data Layer**: TypeScript interfaces in `src/types/` define the data structure:
+- `Expense` - Core expense record with id, amount, category, description, date, and timestamps
+- `ExpenseCategory` - Union type for predefined categories (Food, Transportation, Entertainment, Shopping, Bills, Other)
+- `CloudService` and `ExportTemplate` - Advanced export system types
+- `ExpenseFilters` - Filtering interface for expense lists
+- `ExpenseSummary` - Analytics data structure
 
-### Data Flow
-1. User interactions → Components
-2. Components → Storage layer (`storage.ts`)
-3. Storage layer → localStorage
-4. Data retrieval follows reverse path with error handling
+**Component Architecture**: React components are organized by functionality:
+- Form components (`expense-form.tsx`) handle CRUD operations
+- Display components (`expense-list.tsx`, `summary-cards.tsx`) show data with filtering/sorting
+- Export components (`export-modal.tsx`, `cloud-export-dashboard.tsx`, `simple-csv-report.tsx`) provide multiple export formats
+- Analytics components provide visual data insights
+- Layout components (`navigation.tsx`) provide consistent UI structure
+
+### Export System Architecture
+
+The application features a sophisticated multi-format export system:
+
+**Local Exports** (`src/lib/utils.ts`):
+- CSV export with proper escaping for spreadsheet compatibility
+- JSON export with metadata and structured format
+- PDF export using jsPDF with pagination and formatting
+- All exports support filtered data and custom filenames
+
+**Cloud Export Hub** (`src/components/cloud-export-dashboard.tsx`):
+- Mock integration with cloud services (Gmail, Google Sheets, Dropbox, OneDrive, Slack)
+- Export templates for different use cases (tax reports, monthly summaries, category analysis)
+- Scheduled export functionality with frequency options
+- QR code generation for sharing using the `qrcode` library
+- Professional UI with tab-based navigation and status indicators
+
+**Simple CSV Reports** (`src/components/simple-csv-report.tsx`):
+- Dedicated CSV report generation page
+- Real-time expense filtering and preview
+- Direct download functionality
+
+### Analytics Features
+
+The analytics dashboard provides:
+- Visual expense breakdowns by category
+- Time-based spending trends
+- Summary statistics and insights
+- Interactive charts and graphs
+
+### Data Flow Patterns
+
+1. **State Management**: Uses React hooks with localStorage persistence
+2. **Data Filtering**: Utility functions handle complex filtering by date, category, and search terms
+3. **Export Processing**: Async operations with progress indicators and error handling
+4. **Form Validation**: Real-time validation with user-friendly error messages
+5. **Analytics Processing**: Real-time calculation of statistics and trends
+
+### Key Implementation Details
+
+- **Next.js App Router**: Uses the modern app directory structure with layout.tsx for consistent navigation
+- **Tailwind CSS**: Custom design system with CSS variables for theming in globals.css
+- **TypeScript**: Strict type checking throughout with comprehensive interfaces
+- **Responsive Design**: Mobile-first approach with proper touch interfaces
+- **Error Handling**: Comprehensive error boundaries and user feedback systems
+
+### Dependencies Architecture
+
+**Production Dependencies**:
+- `next` (14.x) - React framework with App Router
+- `react` (18.x) - UI library  
+- `jspdf` (3.0.1) - PDF generation for reports
+- `qrcode` (1.5.4) - QR code generation for sharing
+
+**Development Stack**:
+- `typescript` (5.x) - Type safety
+- `tailwindcss` (4.x) - Styling framework
+- `eslint` - Code quality and Next.js best practices
+
+### File Organization Principles
+
+- `src/app/` - Next.js pages using App Router (add/, expenses/, analytics/, csv-report/, root dashboard)
+- `src/components/` - Reusable React components organized by feature
+- `src/lib/` - Utility functions and business logic (storage operations, calculations, export functions)
+- `src/types/` - TypeScript type definitions for type safety
+
+### Code Style Conventions
+
+- Use TypeScript interfaces for all data structures
+- Follow Next.js App Router patterns
+- Implement proper error handling in all async operations
+- Use Tailwind CSS utility classes with semantic component structure
+- Maintain consistent naming: camelCase for variables/functions, PascalCase for components
+- Include loading states and progress indicators for user experience
 
 ## Development Notes
 
