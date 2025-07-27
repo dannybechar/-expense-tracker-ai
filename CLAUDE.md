@@ -5,11 +5,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Development Commands
 
 The main application is located in the `expense-tracker/` directory. Navigate there before running commands:
+## Project Overview
 
-```bash
-cd expense-tracker
-```
+This is an expense tracker analytics application built with Next.js 14, TypeScript, and Tailwind CSS. The main application code is located in the `expense-tracker/` subdirectory.
 
+## Development Commands
+
+Navigate to the `expense-tracker/` directory before running these commands:
 ### Core Commands
 - `npm run dev` - Start development server with Turbopack (Next.js 15.4.2)
 - `npm run build` - Build for production 
