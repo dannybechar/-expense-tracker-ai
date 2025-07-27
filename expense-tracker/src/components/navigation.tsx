@@ -10,6 +10,7 @@ export default function Navigation() {
     { href: '/', label: 'Dashboard', icon: '📊' },
     { href: '/expenses', label: 'Expenses', icon: '💰' },
     { href: '/add', label: 'Add Expense', icon: '➕' },
+    { href: '/top-categories', label: 'Top Categories', icon: '📈' },
   ];
 
   return (
