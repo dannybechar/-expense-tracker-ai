@@ -12,6 +12,7 @@ export default function Navigation() {
     { href: '/add', label: 'Add Expense', icon: '➕' },
     { href: '/csv-report', label: 'CSV Report', icon: '📄' },
     { href: '/analytics', label: 'Analytics', icon: '📈' },
+    { href: '/top-categories', label: 'Top Categories', icon: '📊' },
   ];
 
   return (
