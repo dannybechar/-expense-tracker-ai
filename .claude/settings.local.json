@@ -20,7 +20,9 @@
       "Bash(git worktree:*)",
       "Bash(find:*)",
       "Bash(npm run type-check:*)",
-      "Bash(npm run test:*)"
+      "Bash(npm run test:*)",
+      "Bash(git rm:*)",
+      "Bash(npm run:*)"
     ],
     "deny": []
   }

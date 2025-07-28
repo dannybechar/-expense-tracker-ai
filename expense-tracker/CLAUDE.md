@@ -31,27 +31,141 @@ This is a modern expense tracking web application built with Next.js 14, TypeScr
 
 ## Development Workflow
 
-### 1. Requirements Analysis & Implementation Steps
+### 1. Parallel Development Strategy
+
+**When to Use Parallel Development:**
+- Multiple features can be developed simultaneously without conflicts
+- Independent components or utilities
+- Different team members working on separate modules
+- Performance optimizations that don't affect core functionality
+
+**Parallel Development Process:**
+1. **Feature Branch Creation** (can be done simultaneously)
+   ```bash
+   # Create feature branches in parallel
+   git checkout -b feature/user-authentication
+   git checkout -b feature/data-visualization  
+   git checkout -b feature/mobile-optimization
+   git checkout -b fix/performance-improvements
+   ```
+
+2. **Parallel Tool Usage** (maximize efficiency)
+   ```bash
+   # Run multiple operations simultaneously using multiple tool calls
+   # Example: Analyze multiple files at once
+   Read(file1.ts) + Read(file2.ts) + Read(file3.ts)
+   
+   # Run parallel tests and builds
+   npm run test & npm run lint & npm run type-check
+   ```
+
+3. **Independent Development Paths**
+   - **Frontend Components**: UI components that don't share state
+   - **Backend Services**: API endpoints and data processing
+   - **Utility Functions**: Pure functions without dependencies
+   - **Testing Suites**: Unit tests for different modules
+
+### 2. File Naming Conventions & Formulas
+
+#### **Component Naming Formula**
+```
+[Feature][Type][Variant?].tsx
+
+Examples:
+- ExpenseForm.tsx (main form)
+- ExpenseFormModal.tsx (modal variant)
+- ExpenseListItem.tsx (list item component)
+- UserAuthButton.tsx (authentication button)
+- DashboardSummaryCard.tsx (dashboard summary)
+```
+
+#### **Test File Naming Formula**
+```
+[ComponentName].test.tsx
+[UtilityName].test.ts
+
+Examples:
+- ExpenseForm.test.tsx
+- utils.test.ts
+- storage.test.ts
+- api-client.test.ts
+```
+
+#### **Utility File Naming Formula**
+```
+[Domain][Purpose].ts
+
+Examples:
+- date-helpers.ts
+- currency-formatters.ts
+- validation-rules.ts
+- api-endpoints.ts
+- expense-calculations.ts
+```
+
+#### **Hook Naming Formula**
+```
+use[Feature][Action?].ts
+
+Examples:
+- useExpenses.ts
+- useExpenseForm.ts
+- useLocalStorage.ts
+- useDebounce.ts
+```
+
+#### **Type Definition Naming Formula**
+```
+[Domain].types.ts
+
+Examples:
+- expense.types.ts
+- user.types.ts
+- api.types.ts
+- ui.types.ts
+```
+
+#### **Feature Branch Naming Formula**
+```
+[type]/[feature-description]
+
+Types:
+- feature/: New functionality
+- fix/: Bug fixes
+- security/: Security improvements
+- performance/: Performance optimizations
+- test/: Testing improvements
+- docs/: Documentation updates
+
+Examples:
+- feature/monthly-insights-dashboard
+- fix/currency-formatting-precision
+- security/input-sanitization
+- performance/bundle-size-optimization
+```
+
+### 3. Requirements Analysis & Implementation Steps
 
 Before implementing any feature:
 
-1. **Analyze Requirements**
+1. **Analyze Requirements** (Can be done in parallel for multiple features)
    - Break down feature into atomic components
    - Identify data flow and state management needs
    - Consider security implications for financial data
    - Plan testing approach
+   - **Parallel Analysis**: Use multiple tool calls to examine related files simultaneously
 
-2. **Design Phase**
+2. **Design Phase** (Independent design work can proceed in parallel)
    - Create/update TypeScript interfaces
    - Plan component hierarchy
    - Ensure SOLID principle compliance
    - Consider accessibility requirements
 
-3. **Implementation Phase**
-   - Write pure functions first (utilities)
-   - Implement storage layer if needed
-   - Create components with proper error boundaries
-   - Add proper TypeScript types
+3. **Implementation Phase** (Coordinate parallel development)
+   - Write pure functions first (utilities) - can be done independently
+   - Implement storage layer if needed - coordinate with other developers
+   - Create components with proper error boundaries - can be done in parallel
+   - Add proper TypeScript types - share common types across parallel branches
 
 ### 2. Testing Strategy & Execution
 
@@ -380,10 +494,97 @@ When updating the README for major builds, include:
 - Accessibility enhancements
 - Bug fixes
 
+## Weekly Reporting Requirements
+
+### Weekly Development Report Template
+
+**Report Period**: [Start Date] - [End Date]
+**Developer**: [Name]
+**Project**: Expense Tracker AI
+
+#### 📊 **Development Metrics**
+- **Commits Made**: [Number]
+- **Lines of Code Added**: [Number]
+- **Lines of Code Removed**: [Number]
+- **Files Modified**: [Number]
+- **Test Coverage Change**: [Previous]% → [Current]%
+- **Build Success Rate**: [Percentage]
+
+#### 🎯 **Features Completed**
+- ✅ **[Feature Name]**: [Brief description and impact]
+- ✅ **[Feature Name]**: [Brief description and impact]
+- 🔄 **[Feature Name]**: [In Progress - completion percentage]
+
+#### 🐛 **Bugs Fixed**
+- **[Bug Description]**: [Solution implemented]
+- **[Bug Description]**: [Solution implemented]
+
+#### 🧪 **Testing Activities**
+- **Unit Tests Added**: [Number]
+- **Integration Tests Added**: [Number]
+- **Test Coverage Improvement**: [Details]
+- **Performance Tests**: [Results]
+
+#### 🔧 **Technical Debt & Refactoring**
+- **Code Refactored**: [Description]
+- **Dependencies Updated**: [List]
+- **Performance Improvements**: [Details]
+- **Security Enhancements**: [Details]
+
+#### 📝 **Documentation Updates**
+- **README Updates**: [Changes made]
+- **Code Documentation**: [Functions/components documented]
+- **API Documentation**: [Updates]
+
+#### 🚧 **Blockers & Challenges**
+- **Current Blockers**: [Description and proposed solutions]
+- **Technical Challenges**: [How they were resolved]
+- **Dependencies Waiting**: [External dependencies needed]
+
+#### 📅 **Next Week's Goals**
+- **Priority 1**: [Specific goal with timeline]
+- **Priority 2**: [Specific goal with timeline]
+- **Priority 3**: [Specific goal with timeline]
+
+#### 🎯 **Code Quality Metrics**
+- **ESLint Warnings**: [Current count vs previous]
+- **TypeScript Errors**: [Current count vs previous]
+- **Build Time**: [Current vs previous]
+- **Bundle Size**: [Current vs previous]
+
+#### 📈 **Weekly Automation Report**
+```bash
+# Generate weekly report
+npm run weekly-report
+
+# Commands to collect metrics
+git log --since="1 week ago" --stat
+git shortlog --since="1 week ago" --numbered --summary
+npm run test -- --coverage
+npm run build -- --analyze
+```
+
+### **When Weekly Reports Are Required**
+1. **Regular Sprint Reviews**: Every Friday EOD
+2. **Project Milestones**: Before major releases
+3. **Stakeholder Updates**: Monthly comprehensive reports
+4. **Performance Reviews**: Quarterly detailed analysis
+5. **Client Requests**: Ad-hoc reporting as needed
+6. **Team Retrospectives**: Before sprint planning
+
+### **Automated Report Generation**
+```bash
+# Add to package.json scripts
+"weekly-report": "node scripts/generate-weekly-report.js"
+"metrics-collection": "node scripts/collect-metrics.js"
+"git-stats": "git log --since='1 week ago' --pretty=tformat: --numstat | awk '{add+=$1; subs+=$2; loc+=$1-$2} END {printf \"Added: %s, Removed: %s, Total: %s\\n\", add, subs, loc}'"
+```
+
 ## Commands Reference
 
-### Development
+### Development (Parallel Execution Support)
 ```bash
+# Sequential execution
 npm run dev          # Start development server
 npm run build        # Production build
 npm run start        # Start production server
@@ -391,25 +592,38 @@ npm run lint         # Run ESLint
 npm run type-check   # TypeScript validation
 npm test             # Run all tests
 npm run test:watch   # Run tests in watch mode
+
+# Parallel execution for efficiency
+npm run lint & npm run type-check & npm test  # Run quality checks in parallel
 ```
 
-### Git Operations
+### Git Operations (Parallel Development)
 ```bash
 # Branch management
 git branch -vv                    # Check branch tracking
 git status                       # Check working directory
 git log --oneline -5             # Recent commits
 
+# Parallel branch operations
+git fetch origin & git status    # Fetch and check status simultaneously
+
 # Synchronization
 git fetch origin                 # Fetch remote changes
 git push -u origin feature-name  # Push and set tracking
 git pull --rebase origin main    # Sync with main branch
+
+# Parallel development workflow
+git checkout -b feature/parallel-1 & git checkout -b feature/parallel-2
 ```
 
-### Quality Assurance
+### Quality Assurance (Optimized for Parallel Execution)
 ```bash
-# Full quality check before commit
+# Full quality check before commit (parallel where possible)
 npm run lint && npm run type-check && npm test && npm run build
+
+# Weekly report generation
+npm run weekly-report
+npm run git-stats
 ```
 
 ---
