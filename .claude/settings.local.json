@@ -17,7 +17,10 @@
       "Bash(git remote set-url:*)",
       "Bash(git push:*)",
       "Bash(ls:*)",
-      "Bash(git worktree:*)"
+      "Bash(git worktree:*)",
+      "Bash(find:*)",
+      "Bash(npm run type-check:*)",
+      "Bash(npm run test:*)"
     ],
     "deny": []
   }

@@ -127,7 +127,7 @@ export default function MonthlyInsights() {
             strokeWidth={strokeWidth}
             fill="transparent"
           />
-          {topCategories.map((category, index) => {
+          {topCategories.map((category) => {
             const strokeDasharray = `${category.percentage / 100 * circumference} ${circumference}`;
             const strokeDashoffset = -accumulatedPercentage / 100 * circumference;
             accumulatedPercentage += category.percentage;
@@ -190,7 +190,7 @@ export default function MonthlyInsights() {
         <div className="space-y-6">
           {/* Top 3 Categories */}
           <div className="space-y-4">
-            {topCategories.map((category, index) => (
+            {topCategories.map((category) => (
               <div key={category.category} className="flex items-center space-x-4">
                 <div 
                   className="w-4 h-8 rounded"
