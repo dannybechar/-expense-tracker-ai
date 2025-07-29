@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-07-28T11:41:51.504Z",
+  "code": {
+    "totalFiles": 19,
+    "totalLines": 3411,
+    "componentFiles": 13,
+    "testFiles": 2,
+    "utilityFiles": 1,
+    "averageLinesPerFile": 180
+  },
+  "git": {
+    "totalCommits": "18",
+    "contributors": "0",
+    "currentBranch": "feature-data-export-v3",
+    "lastCommitDate": "2025-07-28 14:41:36 +0300",
+    "repoSize": "0"
+  },
+  "tests": {
+    "totalTests": 0,
+    "passingTests": 0,
+    "failingTests": 0,
+    "coverage": "15.01%"
+  },
+  "build": {
+    "lastBuildStatus": "success",
+    "buildTime": "37.57s",
+    "bundleSize": "2 pages generated"
+  },
+  "dependencies": {
+    "totalDependencies": 7,
+    "devDependencies": 15,
+    "outdatedPackages": 0,
+    "securityIssues": 0
+  }
+}
